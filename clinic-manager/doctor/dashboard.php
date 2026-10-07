@@ -38,6 +38,13 @@ $appointments = $stmt->get_result();
 
 <div class="container">
     <h2>My Appointments</h2>
+
+    <?php if (isset($_GET['msg']) && $_GET['msg'] === 'cancelled'): ?>
+        <p class="success">Appointment cancelled successfully.</p>
+    <?php elseif (isset($_GET['error']) && $_GET['error'] === 'cancel_failed'): ?>
+        <p class="error">Could not cancel that appointment. It may already be cancelled/completed, or does not belong to you.</p>
+    <?php endif; ?>
+
     <table>
         <tr><th>Patient</th><th>Date</th><th>Time</th><th>Status</th><th>Action</th></tr>
         <?php while ($row = $appointments->fetch_assoc()): ?>
@@ -49,6 +56,12 @@ $appointments = $stmt->get_result();
             <td>
                 <?php if ($row['status'] === 'booked'): ?>
                     <a href="add_prescription.php?appointment_id=<?= $row['id'] ?>">Add Prescription</a>
+                    &nbsp;|&nbsp;
+                    <form method="POST" action="cancel_appointment.php" style="display:inline;"
+                          onsubmit="return confirm('Are you sure you want to cancel this appointment?');">
+                        <input type="hidden" name="appointment_id" value="<?= $row['id'] ?>">
+                        <button type="submit" class="btn btn-outline btn-sm">Cancel Appointment</button>
+                    </form>
                 <?php else: ?>
                     <a href="add_prescription.php?appointment_id=<?= $row['id'] ?>">View</a>
                 <?php endif; ?>
