@@ -31,7 +31,7 @@ $appointments = $stmt->get_result();
 <div class="navbar">
     <strong>🏥 Clinic Manager</strong>
     <div>
-        <span>Dr. <?= htmlspecialchars($_SESSION['name']) ?></span>
+        <span> <?= htmlspecialchars($_SESSION['name']) ?></span>
         <a href="../logout.php">Logout</a>
     </div>
 </div>
